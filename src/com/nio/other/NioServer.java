@@ -135,7 +135,7 @@ public class NioServer {
     }
 
     public static void main(String[] args) throws IOException {
-        int port = 22222;
+        int port = 10110;
         NioServer server = new NioServer(port);
         server.listen();
     }
