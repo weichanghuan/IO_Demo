@@ -1,5 +1,8 @@
 package com.nio.other;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.io.IOException;
 import java.net.InetSocketAddress;
 import java.net.ServerSocket;
@@ -16,13 +19,14 @@ import java.util.Iterator;
 import java.util.Set;
 
 /**
- * 
- * @description:(nio服务端)
  * @author 52762
+ * @description:(nio服务端)
  * @date 2017年10月23日 下午10:42:07
  * @since JDK 1.6
  */
 public class NioServer {
+    private Logger logger = LoggerFactory.getLogger(NioServer.class);
+
     /* 缓冲区大小 */
     private static final int BLOCK_SIZE = 4096;
     /* 接收数据缓冲区大小 */
@@ -50,10 +54,12 @@ public class NioServer {
         selector = Selector.open();
         /* 注册到accept事件到 selector，等待连接 */
         serverSocketChannel.register(selector, SelectionKey.OP_ACCEPT);
-        System.out.println("NIO Server Start.........................");
+        logger.info("NIO Server Start.........................");
     }
 
-    /** 一直不断的监听 */
+    /**
+     * 一直不断的监听
+     */
     public void listen() throws IOException {
         while (true) {
             // 监控注册在Selector上的ServerSocketChannel，返回值代表有多少channel已经就绪，可以进行I/O操作了
@@ -68,7 +74,7 @@ public class NioServer {
                  */
                 Set<SelectionKey> keys = selector.selectedKeys();
                 SelectionKey key = null;
-                for (Iterator<SelectionKey> it = keys.iterator(); it.hasNext();) {
+                for (Iterator<SelectionKey> it = keys.iterator(); it.hasNext(); ) {
                     key = (SelectionKey) it.next();
                     // 需要将处理过的key从selectedKeys这个集合中删除
                     it.remove();
@@ -78,10 +84,12 @@ public class NioServer {
         }
     }
 
-    /** 处理请求 */
+    /**
+     * 处理请求
+     */
     public void handleKey(SelectionKey key) throws IOException {
         if (key == null) {
-            System.out.println("SelectionKey is null");
+            logger.info("SelectionKey is null");
             return;
         }
         ServerSocketChannel serverSocketChannel = null;
@@ -107,7 +115,7 @@ public class NioServer {
             count = socketChannel.read(recieveBuffer);
             if (count > 0) {
                 String recvText = new String(recieveBuffer.array(), 0, count);
-                System.out.println("服务器端接受客户端数据--: " + recvText);
+                logger.info("服务器端接受客户端数据--: " + recvText);
                 socketChannel.register(selector, SelectionKey.OP_WRITE);
             }
         } else if (key.isWritable()) {// 判断该通道是否已准备好写
@@ -120,7 +128,7 @@ public class NioServer {
             sendBuffer.put(data.getBytes(Charset.defaultCharset()));
             /* 将数据输出到通道 */
             socketChannel.write(sendBuffer);
-            System.out.println("服务器端向客户端发送数据--: " + data);
+            logger.info("服务器端向客户端发送数据--: " + data);
             /* 又注册到selector，等待读取 */
             socketChannel.register(selector, SelectionKey.OP_READ);
         }
