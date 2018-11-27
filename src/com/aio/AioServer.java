@@ -20,18 +20,18 @@ public class AioServer {
 
     public AioServer() {
         try {
-            // Í¬ÑùÊÇÀûÓÃ¹¤³§·½·¨²úÉúÒ»¸öÍ¨µÀ£¬Òì²½Í¨µÀ AsynchronousServerSocketChannel
+            // åŒæ ·æ˜¯åˆ©ç”¨å·¥å‚æ–¹æ³•äº§ç”Ÿä¸€ä¸ªé€šé“ï¼Œå¼‚æ­¥é€šé“ AsynchronousServerSocketChannel
             server = AsynchronousServerSocketChannel.open().bind(new InetSocketAddress(IP, PORT));
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
-    // Ê¹ÓÃÕâ¸öÍ¨µÀ(server)À´½øĞĞ¿Í»§¶ËµÄ½ÓÊÕºÍ´¦Àí
+    // ä½¿ç”¨è¿™ä¸ªé€šé“(server)æ¥è¿›è¡Œå®¢æˆ·ç«¯çš„æ¥æ”¶å’Œå¤„ç†
     public void start() {
         System.out.println("Server listen on " + PORT);
 
-        // ×¢²áÊÂ¼şºÍÊÂ¼şÍê³ÉºóµÄ´¦ÀíÆ÷£¬Õâ¸öCompletionHandler¾ÍÊÇÊÂ¼şÍê³ÉºóµÄ´¦ÀíÆ÷
+        // æ³¨å†Œäº‹ä»¶å’Œäº‹ä»¶å®Œæˆåçš„å¤„ç†å™¨ï¼Œè¿™ä¸ªCompletionHandlerå°±æ˜¯äº‹ä»¶å®Œæˆåçš„å¤„ç†å™¨
         server.accept(null, new CompletionHandler<AsynchronousSocketChannel, Object>() {
 
             final ByteBuffer buffer = ByteBuffer.allocate(1024);
@@ -48,7 +48,7 @@ public class AioServer {
 
                     System.out.println("In server: " + new String(buffer.array()));
 
-                    // ½«Êı¾İĞ´»Ø¿Í»§¶Ë
+                    // å°†æ•°æ®å†™å›å®¢æˆ·ç«¯
                     buffer.flip();
                     writeResult = result.write(buffer);
                 } catch (InterruptedException | ExecutionException | TimeoutException e) {
