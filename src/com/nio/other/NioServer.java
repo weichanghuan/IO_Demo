@@ -126,6 +126,10 @@ public class NioServer {
             String data = dateFormat.format(new Date());
             /* 向缓冲区中输入数据 */
             sendBuffer.put(data.getBytes(Charset.defaultCharset()));
+            // 反转缓冲区。首先将限制设置为当前位置，然后将位置设置为 0。如果已定义了标记，则丢弃该标记。
+            // 常与compact方法一起使用。通常情况下，在准备从缓冲区中读取数据时调用flip方法
+            // 重点
+            sendBuffer.flip();
             /* 将数据输出到通道 */
             socketChannel.write(sendBuffer);
             logger.info("服务器端向客户端发送数据--: " + data);
