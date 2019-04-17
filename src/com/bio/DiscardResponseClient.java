@@ -8,22 +8,22 @@ import java.io.OutputStream;
 import java.net.Socket;
 
 public class DiscardResponseClient {
-    public static final String IP_ADDR = "localhost";// ·şÎñÆ÷µØÖ·
-    public static final int PORT = 8000;// ·şÎñÆ÷¶Ë¿ÚºÅ
+    public static final String IP_ADDR = "localhost";// æœåŠ¡å™¨åœ°å€
+    public static final int PORT = 8000;// æœåŠ¡å™¨ç«¯å£å·
     private static Socket socket;
     protected static OutputStream out;
     protected static InputStream in;
 
     public static void main(String[] args) {
-        System.out.println("¿Í»§¶ËÆô¶¯...");
-        System.out.println("µ±½ÓÊÕµ½·şÎñÆ÷¶Ë×Ö·ûÎª \"OK\" µÄÊ±ºò, ¿Í»§¶Ë½«ÖÕÖ¹\n");
+        System.out.println("å®¢æˆ·ç«¯å¯åŠ¨...");
+        System.out.println("å½“æ¥æ”¶åˆ°æœåŠ¡å™¨ç«¯å­—ç¬¦ä¸º \"OK\" çš„æ—¶å€™, å®¢æˆ·ç«¯å°†ç»ˆæ­¢\n");
         try {
-            // ´´½¨Ò»¸öÁ÷Ì×½Ó×Ö²¢½«ÆäÁ¬½Óµ½Ö¸¶¨Ö÷»úÉÏµÄÖ¸¶¨¶Ë¿ÚºÅ
+            // åˆ›å»ºä¸€ä¸ªæµå¥—æ¥å­—å¹¶å°†å…¶è¿æ¥åˆ°æŒ‡å®šä¸»æœºä¸Šçš„æŒ‡å®šç«¯å£å·
             socket = new Socket(IP_ADDR, PORT);
 
-            // ¶ÁÈ¡·şÎñÆ÷Êı¾İ
+            // è¯»å–æœåŠ¡å™¨æ•°æ®
             readServerMsg();
-            // Ïò·şÎñÆ÷¶Ë·¢ËÍÊı¾İ
+            // å‘æœåŠ¡å™¨ç«¯å‘é€æ•°æ®
             writeServerMsg();
 
         } catch (Exception e) {
@@ -35,11 +35,11 @@ public class DiscardResponseClient {
         new Thread(new Runnable() {
             @Override
             public void run() {
-                // Ïò·şÎñÆ÷¶Ë·¢ËÍÊı¾İ
+                // å‘æœåŠ¡å™¨ç«¯å‘é€æ•°æ®
                 try {
                     out = socket.getOutputStream();
                     while (true) {
-                        System.out.print("ÇëÊäÈë: \t");
+                        System.out.print("è¯·è¾“å…¥: \t");
                         String str = new BufferedReader(new InputStreamReader(System.in)).readLine();
                         out.write(str.getBytes("utf-8"));
                         readServerMsg();
@@ -56,17 +56,17 @@ public class DiscardResponseClient {
         new Thread(new Runnable() {
             @Override
             public void run() {
-                // ¶ÁÈ¡·şÎñÆ÷¶ËÊı¾İ
+                // è¯»å–æœåŠ¡å™¨ç«¯æ•°æ®
                 try {
                     while (true) {
                         in = socket.getInputStream();
                         byte[] b = new byte[1024];
                         in.read(b);
                         String ret = new String(b);
-                        System.out.println("·şÎñÆ÷¶Ë·µ»Ø¹ıÀ´µÄÊÇ: " + ret);
-                        // Èç½ÓÊÕµ½ "OK" Ôò¶Ï¿ªÁ¬½Ó
+                        System.out.println("æœåŠ¡å™¨ç«¯è¿”å›è¿‡æ¥çš„æ˜¯: " + ret);
+                        // å¦‚æ¥æ”¶åˆ° "OK" åˆ™æ–­å¼€è¿æ¥
                         if (ret != null && ret.contains("OK")) {
-                            System.out.println("¿Í»§¶Ë½«¹Ø±ÕÁ¬½Ó");
+                            System.out.println("å®¢æˆ·ç«¯å°†å…³é—­è¿æ¥");
                             sleep(500);
                             break;
                         }
@@ -91,14 +91,14 @@ public class DiscardResponseClient {
 
     private static void doException(Exception e) {
         // TODO Auto-generated method stub
-        System.out.println("¿Í»§¶ËÒì³£:" + e.getMessage());
+        System.out.println("å®¢æˆ·ç«¯å¼‚å¸¸:" + e.getMessage());
         if (socket != null) {
             try {
                 socket.close();
                 socket = null;
             } catch (IOException e1) {
                 socket = null;
-                System.out.println("¿Í»§¶Ë finally Òì³£:" + e1.getMessage());
+                System.out.println("å®¢æˆ·ç«¯ finally å¼‚å¸¸:" + e1.getMessage());
             }
         }
     }
@@ -117,7 +117,7 @@ public class DiscardResponseClient {
             socket.close();
             socket = null;
         }
-        System.out.println("¹Ø±ÕÁ¬½Ó");
+        System.out.println("å…³é—­è¿æ¥");
     }
 
 }
